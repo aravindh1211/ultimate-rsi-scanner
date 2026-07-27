@@ -1,0 +1,40 @@
+{
+  "nse_stocks": [
+    "HDFCBANK.NS",
+    "ICICIBANK.NS",
+    "RECLTD.NS",
+    "CIPLA.NS",
+    "RELIANCE.NS",
+    "TCS.NS",
+    "ONGC.NS",
+    "BEL.NS",
+    "ASHOKLEY.NS",
+    "NTPC.NS",
+    "IRFC.NS"
+  ],
+  "us_stocks": [
+    "VOO",
+    "GOOGL",
+    "EEM",
+    "VTWO",
+    "NVDA",
+    "AMZN",
+    "MRK",
+    "MSFT",
+    "IYH",
+    "META",
+    "NFLX",
+    "V",
+    "ABBV",
+    "BRK-B",
+    "TSLA",
+    "AAPL",
+    "ACN",
+    "JNJ"
+  ],
+  "crypto": [
+    "bitcoin",
+    "ethereum",
+    "ripple"
+  ]
+}
