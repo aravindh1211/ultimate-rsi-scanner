@@ -1,0 +1,75 @@
+name: Ultimate RSI Monthly Digest
+
+on:
+  schedule:
+    # Runs daily at 14:35 UTC (5 min after the weekly scan window) from the
+    # 28th to the 31st of every month. The script itself checks whether
+    # today is actually the last calendar day of the month and exits
+    # quietly if not — this covers months ending on any weekday, not just
+    # Fridays.
+    - cron: "35 14 28-31 * *"
+
+  # Manual trigger for testing — runs the check immediately regardless of date.
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Force-send the digest even if today isn't the last day of the month"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write   # needed to clear state/weekly_log.json after sending
+
+jobs:
+  digest:
+    name: Compile Monthly Holdings Digest
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run monthly digest
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FORCE_SEND: ${{ github.event.inputs.force || 'false' }}
+        run: |
+          if [ "$FORCE_SEND" = "true" ]; then
+            python -c "
+          import sys; sys.path.insert(0, 'src')
+          import monthly_digest as m
+          from datetime import datetime
+          entries = m.load_weekly_log()
+          m.send_telegram(m.build_digest(entries, datetime.utcnow().strftime('%B %Y')))
+          m.clear_weekly_log()
+          "
+          else
+            python src/monthly_digest.py
+          fi
+
+      - name: Persist cleared weekly log
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdir -p state
+          if [ ! -f state/weekly_log.json ]; then
+            echo "[]" > state/weekly_log.json
+          fi
+          git add state/weekly_log.json
+          if git diff --cached --quiet; then
+            echo "No state changes to commit."
+          else
+            git commit -m "chore: clear weekly holdings log after monthly digest [skip ci]"
+            git push
+          fi
