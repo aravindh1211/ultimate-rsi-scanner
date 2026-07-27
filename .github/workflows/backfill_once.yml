@@ -1,0 +1,41 @@
+name: One-Off Retrospective Backfill
+
+# Manual only — trigger from the Actions tab, run once, then feel free
+# to delete this workflow file (or leave it, it costs nothing sitting idle).
+
+on:
+  workflow_dispatch:
+    inputs:
+      weeks:
+        description: "How many past weeks to check"
+        required: false
+        default: "4"
+
+permissions:
+  contents: read
+
+jobs:
+  backfill:
+    name: Run Retrospective Backfill
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run backfill
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          LOOKBACK_WEEKS: ${{ github.event.inputs.weeks || '4' }}
+        run: python scripts/backfill_4weeks.py
