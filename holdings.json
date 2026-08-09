@@ -5,36 +5,33 @@
     "RECLTD.NS",
     "CIPLA.NS",
     "RELIANCE.NS",
-    "TCS.NS",
     "ONGC.NS",
     "BEL.NS",
     "ASHOKLEY.NS",
-    "NTPC.NS",
-    "IRFC.NS"
+    "NTPC.NS"
   ],
   "us_stocks": [
     "VOO",
     "GOOGL",
-    "EEM",
+    "AMZN",
     "VTWO",
     "NVDA",
-    "AMZN",
-    "MRK",
+    "EEM",
     "MSFT",
     "IYH",
-    "META",
-    "NFLX",
-    "V",
     "ABBV",
-    "BRK-B",
-    "TSLA",
+    "META",
     "AAPL",
     "ACN",
-    "JNJ"
+    "V",
+    "BRK-B",
+    "VEA",
+    "NFLX",
+    "TSLA"
   ],
   "crypto": [
-    "bitcoin",
-    "ethereum",
-    "ripple"
+    "BTC-USD",
+    "ETH-USD",
+    "XRP-USD"
   ]
 }
