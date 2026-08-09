@@ -187,9 +187,13 @@ GLOBAL_INDICES = [
 ]
 
 CRYPTO_IDS = [
-    "bitcoin", "solana", ...       # CoinGecko IDs (find at coingecko.com)
+    "BTC-USD", "ETH-USD", ...      # Yahoo Finance crypto tickers (-USD suffix)
 ]
 ```
+
+Portfolio holdings (NSE stocks, US stocks, crypto) are tracked separately in
+`holdings.json` at the repo root — edit that file directly, or use the
+"Update Holdings" GitHub Actions workflow, rather than editing `scanner.py`.
 
 **Useful index codes:**
 | Index | Code |
