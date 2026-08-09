@@ -28,9 +28,7 @@ from scanner import (  # noqa: E402
     calc_ultimate_rsi, get_label, send_telegram,
     YF_PERIOD, YF_INTERVAL,
 )
-from pycoingecko import CoinGeckoAPI  # noqa: E402
 import pandas as pd  # noqa: E402
-import time  # noqa: E402
 
 LOOKBACK_WEEKS = int(os.environ.get("LOOKBACK_WEEKS", "4"))
 
@@ -86,30 +84,6 @@ def scan_yfinance_group(tickers: list, label: str, weeks: int) -> dict:
     return results
 
 
-def scan_crypto_group(crypto_ids: list, weeks: int) -> dict:
-    cg = CoinGeckoAPI()
-    results = {}
-    print(f"── Crypto: {len(crypto_ids)} coins")
-    for coin_id in crypto_ids:
-        try:
-            time.sleep(1.2)
-            ohlc = cg.get_coin_ohlc_by_id(id=coin_id, vs_currency="usd", days=365)
-            if not ohlc or len(ohlc) < URSI_LENGTH + URSI_SMOOTH + weeks + 5:
-                print(f"  ⚠ {coin_id}: insufficient data")
-                continue
-            df = pd.DataFrame(ohlc, columns=["ts", "open", "high", "low", "close"])
-            df["ts"] = pd.to_datetime(df["ts"], unit="ms")
-            close = df.set_index("ts").sort_index()["close"].dropna()
-            hits = find_triggers_over_lookback(close, weeks)
-            sym = coin_id.upper().replace("-2", "").replace("-", "")
-            if hits:
-                results[sym] = hits
-                print(f"  🔔 {sym}: {len(hits)} trigger(s) in lookback")
-        except Exception as e:
-            print(f"  ✗ {coin_id}: {e}")
-    return results
-
-
 def build_backfill_message(all_hits: dict, weeks: int) -> str:
     now = datetime.utcnow().strftime("%d %b %Y")
     lines = [
@@ -154,7 +128,7 @@ def main():
     all_hits.update(scan_yfinance_group(US_INDICES, "US Indices", LOOKBACK_WEEKS))
     all_hits.update(scan_yfinance_group(HOLDINGS_NSE_STOCKS, "Portfolio — NSE Stocks", LOOKBACK_WEEKS))
     all_hits.update(scan_yfinance_group(HOLDINGS_US_STOCKS, "Portfolio — US Stocks", LOOKBACK_WEEKS))
-    all_hits.update(scan_crypto_group(HOLDINGS_CRYPTO, LOOKBACK_WEEKS))
+    all_hits.update(scan_yfinance_group(HOLDINGS_CRYPTO, "Portfolio — Crypto", LOOKBACK_WEEKS))
 
     message = build_backfill_message(all_hits, LOOKBACK_WEEKS)
     print("\n" + "=" * 60)
