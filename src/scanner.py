@@ -31,19 +31,18 @@ Replicates the LuxAlgo Pine Script exactly:
     signal = ema(arsi, smooth)
 
 Data sources:
-  yfinance   — equities + indices (interval='1wk', period='2y')
-  CoinGecko  — crypto (days=365 → auto weekly granularity)
+  yfinance   — equities + indices + crypto (interval='1wk', period='2y')
+              Crypto tickers use the Yahoo Finance "-USD" suffix format,
+              e.g. BTC-USD, ETH-USD, XRP-USD (see holdings.json).
 """
 
 import os
 import json
-import time
 import logging
 import requests
 import pandas as pd
 import numpy as np
 import yfinance as yf
-from pycoingecko import CoinGeckoAPI
 from datetime import datetime, timedelta
 
 # ── Logging ────────────────────────────────────────────────────────────────────
@@ -87,6 +86,15 @@ INDIAN_INDICES = [
     "^CNXFMCG",       # Nifty FMCG
     "^CNXENERGY",     # Nifty Energy
     "^CNXHEALTH",     # Nifty Healthcare
+    "^CNXMETAL",      # Nifty Metal
+    "^CNXMEDIA",      # Nifty Media
+    "^CNXREALTY",     # Nifty Realty
+    "^CNXPSE",        # Nifty PSE
+    "^CNXCMDT",       # Nifty Commodities
+    "^CNXSERVICE",    # Nifty Services Sector
+    "^CNXMNC",        # Nifty MNC
+    "^CNXCONSUM",     # Nifty Consumption
+    "^CNXFIN",        # Nifty Financial Services
     "^BSESN",         # BSE Sensex
     "GC=F",           # Gold (USD/oz)
     "SI=F",           # Silver (USD/oz)
@@ -172,6 +180,11 @@ INDEX_LABELS = {
     "^CNXPHARMA":  "Nifty Pharma",      "^CNXAUTO":    "Nifty Auto",
     "^CNXPSUBANK": "Nifty PSU Bank",    "^CNXFMCG":    "Nifty FMCG",
     "^CNXENERGY":  "Nifty Energy",      "^CNXHEALTH":  "Nifty Healthcare",
+    "^CNXMETAL":   "Nifty Metal",       "^CNXMEDIA":   "Nifty Media",
+    "^CNXREALTY":  "Nifty Realty",      "^CNXPSE":     "Nifty PSE",
+    "^CNXCMDT":    "Nifty Commodities", "^CNXSERVICE": "Nifty Services Sector",
+    "^CNXMNC":     "Nifty MNC",         "^CNXCONSUM":  "Nifty Consumption",
+    "^CNXFIN":     "Nifty Financial Services",
     "^BSESN":      "BSE Sensex",        "GC=F":        "Gold (USD/oz)",
     "SI=F":        "Silver (USD/oz)",   "GOLDBEES.NS": "Gold/INR (GoldBees)",
     "INFRABEES.NS":"Infra (InfraBees)",
@@ -216,11 +229,11 @@ STOCK_LABELS = {
 }
 
 CRYPTO_LABELS = {
-    "BITCOIN": "Bitcoin (BTC)",       "ETHEREUM": "Ethereum (ETH)",
-    "BINANCECOIN": "BNB (BNB)",       "SOLANA": "Solana (SOL)",
-    "RIPPLE": "XRP (XRP)",            "CARDANO": "Cardano (ADA)",
-    "DOGECOIN": "Dogecoin (DOGE)",    "AVALANCHE": "Avalanche (AVAX)",
-    "CHAINLINK": "Chainlink (LINK)",  "POLKADOT": "Polkadot (DOT)",
+    "BTC-USD": "Bitcoin (BTC)",       "ETH-USD": "Ethereum (ETH)",
+    "XRP-USD": "XRP (Ripple)",        "BNB-USD": "BNB (BNB)",
+    "SOL-USD": "Solana (SOL)",        "ADA-USD": "Cardano (ADA)",
+    "DOGE-USD": "Dogecoin (DOGE)",    "AVAX-USD": "Avalanche (AVAX)",
+    "LINK-USD": "Chainlink (LINK)",   "DOT-USD": "Polkadot (DOT)",
 }
 
 
@@ -359,34 +372,16 @@ def fetch_yfinance(tickers: list, label: str) -> dict:
     return results
 
 
-def fetch_crypto(crypto_ids: list, label: str = "Crypto") -> dict:
+def fetch_crypto(crypto_tickers: list, label: str = "Crypto") -> dict:
     """
-    CoinGecko: days=365 auto-selects weekly OHLC granularity.
-    Returns {SYMBOL: trigger_detail_dict}.
+    Crypto now fetched via yfinance using the "-USD" ticker suffix
+    (e.g. BTC-USD, ETH-USD, XRP-USD), same weekly interval/period as
+    every other instrument in this bot. This replaces the previous
+    CoinGecko-based fetch, which was silently failing/rate-limiting on
+    GitHub Actions runners and causing crypto to never trigger.
+    Returns {ticker: trigger_detail_dict}.
     """
-    cg      = CoinGeckoAPI()
-    results = {}
-    log.info(f"── {label}: {len(crypto_ids)} coins  [Weekly via CoinGecko 365d]")
-    for coin_id in crypto_ids:
-        try:
-            time.sleep(1.2)   # free tier: max 30 req/min
-            ohlc = cg.get_coin_ohlc_by_id(id=coin_id, vs_currency="usd", days=365)
-            if not ohlc or len(ohlc) < URSI_LENGTH + URSI_SMOOTH + 5:
-                log.warning(f"  ⚠ {coin_id}: only {len(ohlc) if ohlc else 0} bars")
-                continue
-            df    = pd.DataFrame(ohlc, columns=["ts","open","high","low","close"])
-            df["ts"] = pd.to_datetime(df["ts"], unit="ms")
-            close = df.set_index("ts").sort_index()["close"].dropna()
-            hit = check_ursi_cross(close)
-            sym = coin_id.upper().replace("-2","").replace("-","")
-            if hit:
-                results[sym] = hit
-                log.info(f"  🔔 {sym}: URSI {hit['prev_ursi']} → {hit['ursi']} "
-                          f"crossed above signal {hit['signal']}  ← TRIGGERED")
-        except Exception as e:
-            log.error(f"  ✗ {coin_id}: {e}")
-    log.info(f"  ✅ {label} done — {len(results)} trigger(s) out of {len(crypto_ids)}")
-    return results
+    return fetch_yfinance(crypto_tickers, label)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
