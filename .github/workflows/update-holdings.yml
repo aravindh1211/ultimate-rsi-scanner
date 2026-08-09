@@ -24,7 +24,7 @@ on:
         required: false
         default: ""
       crypto:
-        description: "CoinGecko crypto IDs to add/remove (comma-separated, prefix with - to remove)"
+        description: "Crypto tickers (Yahoo Finance -USD format, e.g. BTC-USD) to add/remove (comma-separated, prefix with - to remove)"
         required: false
         default: ""
       mode:
