@@ -3,5 +3,31 @@
     "date": "2026-08-07",
     "total_scanned": 83,
     "triggered": {}
+  },
+  {
+    "date": "2026-08-14",
+    "total_scanned": 164,
+    "triggered": {
+      "SUPREMEIND.NS": {
+        "deep_accum": false,
+        "deep_accum_low": 24.74,
+        "prev_ursi": 30.11,
+        "signal": 32.16,
+        "ursi": 33.5
+      },
+      "TMUS": {
+        "deep_accum": false,
+        "deep_accum_low": 25.22,
+        "prev_ursi": 27.55,
+        "signal": 29.8,
+        "ursi": 30.01
+      }
+    },
+    "trim_triggered": {
+      "AAPL": {
+        "prev_ursi": 81.6,
+        "ursi": 79.58
+      }
+    }
   }
 ]
