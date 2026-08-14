@@ -522,7 +522,7 @@ def fetch_crypto(crypto_tickers: list, label: str = "Crypto") -> tuple:
 # weekly notification sent this month — see monthly_digest.py)
 # ══════════════════════════════════════════════════════════════════════════════
 
-def append_weekly_log(today: datetime, triggered: dict, total_scanned: int) -> None:
+def append_weekly_log(today: datetime, triggered: dict, trim_triggered: dict, total_scanned: int) -> None:
     os.makedirs(os.path.dirname(WEEKLY_LOG_FILE) or ".", exist_ok=True)
     entries = []
     if os.path.exists(WEEKLY_LOG_FILE):
@@ -537,6 +537,7 @@ def append_weekly_log(today: datetime, triggered: dict, total_scanned: int) -> N
         "date": today.strftime("%Y-%m-%d"),
         "total_scanned": total_scanned,
         "triggered": {sym: info for sym, info in triggered.items()},
+        "trim_triggered": {sym: info for sym, info in trim_triggered.items()},
     })
 
     with open(WEEKLY_LOG_FILE, "w") as f:
@@ -720,7 +721,7 @@ def main():
     # Log this week's notification so the last-day-of-month digest
     # (src/monthly_digest.py) can compile everything sent this month.
     if run_type == "scheduled":
-        append_weekly_log(today, triggered, total)
+        append_weekly_log(today, triggered, trim_triggered, total)
 
 
 if __name__ == "__main__":
