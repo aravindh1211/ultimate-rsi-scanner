@@ -1,12 +1,16 @@
 # 📊 Ultimate RSI [LuxAlgo] Weekly Scanner — GitHub Actions
 
-Scans **Indian/World/US Indices and your Portfolio Holdings** (indices +
+Scans **Indian/US Indices and your Portfolio + Watchlist Holdings** (indices +
 `holdings.json`) every **Friday at 8:00 PM IST**, on the **Weekly** timeframe.
-Sends a **Telegram alert** listing every instrument where LuxAlgo's Ultimate
-RSI just crossed **above its signal line, having been below 50 on the prior
-bar**. A **consolidated digest** is sent automatically on the last calendar
-day of each month, recapping every weekly alert. Runs 100% free on GitHub
-Actions.
+Sends a **Telegram alert** listing every instrument with an **accumulation
+entry signal** (URSI crosses above its signal line, having been below 50 on
+the prior bar) or a **trim warning** (URSI falls back below 80 after being
+overbought). A **consolidated digest** is sent automatically on the last
+calendar day of each month, recapping every weekly alert. Runs 100% free on
+GitHub Actions.
+
+World Indices are **not** tracked — only Indian and US indices, plus
+portfolio holdings and the Perplexity sector-quality watchlist.
 
 Capital Saturation is intentionally **not** part of this bot — that's
 handled separately in the monthly portfolio-management review.
@@ -24,11 +28,32 @@ Replicates LuxAlgo's Ultimate RSI Pine Script exactly:
 | `num/den = rma(diff/abs(diff), 14)` | Wilder's RMA — `rma(diff, 14)` |
 | `arsi = num/den*50+50` | Same formula |
 | `signal = ema(arsi, 14)` | `pandas.ewm(span=14)` |
-| Trigger | `arsi` crosses **above** `signal`, **and** `arsi` was `< 50` on the bar immediately before the cross |
+| Entry trigger | `arsi` crosses **above** `signal`, **and** `arsi` was `< 50` on the bar immediately before the cross |
+| Trim trigger | `arsi` was `≥ 80` on the prior bar and has now fallen **below 80** this bar |
 
-The below-50 requirement is what separates this from a generic midline
-cross — the RSI has to have genuinely dipped first, then cross back up
-through its own signal line, before it counts as a hit.
+The below-50 requirement is what separates the entry signal from a generic
+midline cross — the RSI has to have genuinely dipped first, then cross back
+up through its own signal line, before it counts as a hit.
+
+### 💎 Deep Accumulation Flag
+
+If Ultimate RSI dipped below **20** at any point in the **~8 weekly bars**
+before the crossover, the alert is additionally tagged **DEEP ACCUM**. This
+is a higher-conviction version of the same signal — historically these have
+produced the largest winners in the portfolio (e.g. MOTHERSON, TRENT). It's
+informational only and doesn't change whether the alert fires.
+
+This is an **"add to position"** signal, not first-buy-only — it can be used
+for a fresh entry or to size up an existing holding.
+
+### 🔻 Trim Warning
+
+If Ultimate RSI was **≥80** (overbought) on the prior weekly bar and has now
+**fallen back below 80**, the instrument gets a separate **TRIM WARNING**
+alert. Per the **~30% trim rule**: on this reversal, trim roughly 30% of the
+position rather than waiting for a deeper breakdown. This check is
+independent of the entry signal and fires on any tracked instrument —
+holding or watchlist name — that rolls over from overbought.
 
 ---
 
