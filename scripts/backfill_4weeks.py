@@ -22,7 +22,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 import yfinance as yf  # noqa: E402
 from scanner import (  # noqa: E402
-    INDIAN_INDICES, WORLD_INDICES, US_INDICES,
+    INDIAN_INDICES, US_INDICES,
     HOLDINGS_NSE_STOCKS, HOLDINGS_US_STOCKS, HOLDINGS_CRYPTO,
     URSI_LENGTH, URSI_SMOOTH, URSI_MIDLINE,
     calc_ultimate_rsi, get_label, send_telegram,
@@ -124,7 +124,6 @@ def main():
 
     all_hits: dict = {}
     all_hits.update(scan_yfinance_group(INDIAN_INDICES, "Indian Indices", LOOKBACK_WEEKS))
-    all_hits.update(scan_yfinance_group(WORLD_INDICES, "World Indices", LOOKBACK_WEEKS))
     all_hits.update(scan_yfinance_group(US_INDICES, "US Indices", LOOKBACK_WEEKS))
     all_hits.update(scan_yfinance_group(HOLDINGS_NSE_STOCKS, "Portfolio — NSE Stocks", LOOKBACK_WEEKS))
     all_hits.update(scan_yfinance_group(HOLDINGS_US_STOCKS, "Portfolio — US Stocks", LOOKBACK_WEEKS))
