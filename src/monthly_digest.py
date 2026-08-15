@@ -105,28 +105,20 @@ def build_digest(entries: list, month_label: str) -> str:
         if trim_triggered:
             any_trim_all_month = True
             for sym, info in sorted(trim_triggered.items(), key=lambda x: -x[1].get("prev_ursi", 0)):
-                lines.append(
-                    f"  🔻 {get_label(sym)}  →  URSI {info.get('prev_ursi', '?')} → "
-                    f"<b>{info.get('ursi', '?')}</b>  (trim warning)"
-                )
+                lines.append(f"  🔻 {get_label(sym)}")
                 all_trim_symbols.setdefault(sym, []).append(date_label)
 
         if triggered:
             any_trigger_all_month = True
             for sym, info in sorted(triggered.items(), key=lambda x: x[1].get("ursi", 0)):
-                lines.append(
-                    f"  🟢 {get_label(sym)}  →  URSI {info.get('prev_ursi', '?')} → "
-                    f"<b>{info.get('ursi', '?')}</b> (signal {info.get('signal', '?')})"
-                )
+                marker = "💎" if info.get("deep_accum") else "🟢"
+                lines.append(f"  {marker} {get_label(sym)}")
                 all_hit_symbols.setdefault(sym, []).append(date_label)
 
         if approaching_triggered:
             any_approaching_all_month = True
             for sym, info in sorted(approaching_triggered.items(), key=lambda x: x[1].get("est_weeks", 99)):
-                lines.append(
-                    f"  👀 {get_label(sym)}  →  URSI {info.get('ursi', '?')} vs signal {info.get('signal', '?')} "
-                    f"(~{info.get('est_weeks', '?')}w to projected cross)"
-                )
+                lines.append(f"  👀 {get_label(sym)}")
                 all_approaching_symbols.setdefault(sym, []).append(date_label)
 
         if not triggered and not trim_triggered and not approaching_triggered:

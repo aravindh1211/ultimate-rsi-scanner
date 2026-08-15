@@ -715,10 +715,7 @@ def build_message(triggered: dict, trim_triggered: dict, approaching_triggered: 
                 continue
             lines.append(f"<b>{section}</b>")
             for sym, info in sorted(items.items(), key=lambda x: -x[1]["prev_ursi"]):
-                lines.append(
-                    f"  🔻 {get_label(sym)}  →  URSI {info['prev_ursi']} → "
-                    f"<b>{info['ursi']}</b>  (fell below {URSI_TRIM_LEVEL:.0f})"
-                )
+                lines.append(f"  🔻 {get_label(sym)}")
             lines.append("")
 
     # ── Accumulation / entry signals ─────────────────────────────────────
@@ -728,14 +725,8 @@ def build_message(triggered: dict, trim_triggered: dict, approaching_triggered: 
         any_hit = True
         lines.append(f"<b>{section}</b>")
         for sym, info in sorted(items.items(), key=lambda x: x[1]["ursi"]):
-            deep_tag = ""
-            if info.get("deep_accum"):
-                deep_tag = f"  💎 <b>DEEP ACCUM</b> (dipped to {info['deep_accum_low']})"
             marker = "💎" if info.get("deep_accum") else "🟢"
-            lines.append(
-                f"  {marker} {get_label(sym)}  →  URSI {info['prev_ursi']} → "
-                f"<b>{info['ursi']}</b> (signal {info['signal']}){deep_tag}"
-            )
+            lines.append(f"  {marker} {get_label(sym)}")
         lines.append("")
 
     # ── Approaching-crossover watch notes — get ready to deploy ──────────
@@ -748,10 +739,7 @@ def build_message(triggered: dict, trim_triggered: dict, approaching_triggered: 
                 continue
             lines.append(f"<b>{section}</b>")
             for sym, info in sorted(items.items(), key=lambda x: x[1]["est_weeks"]):
-                lines.append(
-                    f"  👀 {get_label(sym)}  →  URSI {info['ursi']} vs signal {info['signal']} "
-                    f"(gap {info['gap']})  →  <b>~{info['est_weeks']}w</b> to projected cross"
-                )
+                lines.append(f"  👀 {get_label(sym)}")
             lines.append("")
 
     if not any_hit:
