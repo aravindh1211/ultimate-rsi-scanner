@@ -1,5 +1,5 @@
 """
-Ultimate RSI [LuxAlgo] Scanner — GitHub Actions Edition (v9)
+Ultimate RSI [LuxAlgo] Scanner — GitHub Actions Edition (v10)
 Timeframe : Weekly (1wk candles) for everything
 Schedule  : Every Friday 8:00 PM IST (14:30 UTC) + any manual run
 
@@ -34,6 +34,17 @@ Exit — Trim Warning:
   watchlist name) whose URSI rolls over from overbought.
   Per the ~30% trim rule: on this reversal, trim roughly 30% of the
   position rather than waiting for a deeper breakdown.
+
+Watch — Approaching Crossover:
+  A forward-looking heads-up, separate from the confirmed entry signal
+  above, meant to let capital be staged BEFORE the actual cross fires
+  rather than scrambled together the same week it happens. Fires when
+  URSI is below 50, trending up, and the gap between URSI and its
+  signal line has been narrowing at a steady weekly rate over the last
+  3 bars — projected forward, that rate implies a cross within roughly
+  4-6 weeks (configurable via URSI_APPROACH_MAX_WEEKS). This is a rough
+  linear projection, not a promise — momentum can stall or reverse. The
+  real, actionable entry still requires the confirmed crossover.
 
 Capital Saturation is intentionally NOT part of this bot — handled
 separately in the monthly portfolio review.
@@ -81,6 +92,8 @@ URSI_MIDLINE = 50.0
 URSI_DEEP_ACCUM_LEVEL   = 20.0   # deep accumulation threshold
 URSI_DEEP_ACCUM_LOOKBACK = 8     # weekly bars to look back for the deep dip
 URSI_TRIM_LEVEL = 80.0           # overbought level — falling back below this triggers a trim warning
+URSI_APPROACH_MAX_WEEKS = 6      # flag as "approaching crossover" if projected cross is within this many weeks
+URSI_APPROACH_LOOKBACK  = 3      # weekly bars used to measure the gap-narrowing rate
 
 # Weekly fetch settings
 YF_INTERVAL = "1wk"
@@ -457,6 +470,73 @@ def check_ursi_trim(close: pd.Series):
     return None
 
 
+def check_ursi_approaching(close: pd.Series):
+    """
+    Evaluates the "Approaching Crossover" watch condition — a heads-up so
+    money can be staged/ready BEFORE the actual entry signal fires, rather
+    than scrambling to deploy capital the same week the cross confirms.
+
+    Looks at the last URSI_APPROACH_LOOKBACK (3) weekly bars and measures
+    how fast the gap between URSI and its signal line is narrowing:
+
+      gap[t] = signal[t] - arsi[t]           (positive while arsi < signal)
+      rate   = average weekly narrowing of that gap over the lookback window
+
+    If URSI is currently below 50 (the same precondition the real entry
+    signal needs), hasn't crossed yet, and is trending up while the gap
+    narrows at a steady pace, this projects: "at the current rate, this
+    would cross in ~N weeks." Flags the ticker if that projection is
+    within URSI_APPROACH_MAX_WEEKS (6).
+
+    This is explicitly a rough, linear projection — momentum can stall,
+    reverse, or accelerate — so it's a "get ready" watch note, not a
+    trade signal. The confirmed entry still requires the actual crossover
+    from check_ursi_cross().
+
+    Returns a dict with the projection detail if triggered, else None.
+    """
+    arsi, signal = calc_ultimate_rsi(close)
+    if arsi is None:
+        return None
+
+    valid = (~arsi.isna()) & (~signal.isna())
+    arsi_v, signal_v = arsi[valid], signal[valid]
+    n = URSI_APPROACH_LOOKBACK + 1
+    if len(arsi_v) < n:
+        return None
+
+    recent_arsi   = arsi_v.iloc[-n:]
+    recent_signal = signal_v.iloc[-n:]
+    curr_arsi = float(recent_arsi.iloc[-1])
+    curr_signal = float(recent_signal.iloc[-1])
+
+    # Already crossed, or at/above 50 — not this signal's territory.
+    if curr_arsi >= URSI_MIDLINE or curr_arsi >= curr_signal:
+        return None
+
+    gaps = (recent_signal - recent_arsi).tolist()   # length n, oldest → newest
+    weekly_narrowing = [gaps[i] - gaps[i + 1] for i in range(len(gaps) - 1)]
+    avg_rate = sum(weekly_narrowing) / len(weekly_narrowing)
+
+    # Must be consistently converging (positive rate) and URSI itself
+    # trending up over the window, not just noisy movement near the line.
+    rising = curr_arsi > float(recent_arsi.iloc[0])
+    if avg_rate <= 0 or not rising:
+        return None
+
+    curr_gap = gaps[-1]
+    est_weeks = curr_gap / avg_rate
+    if est_weeks <= 0 or est_weeks > URSI_APPROACH_MAX_WEEKS:
+        return None
+
+    return {
+        "ursi": round(curr_arsi, 2),
+        "signal": round(curr_signal, 2),
+        "gap": round(curr_gap, 2),
+        "est_weeks": round(est_weeks, 1),
+    }
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # DATA FETCHERS
 # ══════════════════════════════════════════════════════════════════════════════
@@ -464,12 +544,14 @@ def check_ursi_trim(close: pd.Series):
 def fetch_yfinance(tickers: list, label: str) -> tuple:
     """
     Fetch WEEKLY OHLCV via Ticker.history(interval='1wk', period='2y').
-    Returns (entry_results, trim_results) — two dicts of
-    {ticker: trigger_detail_dict}, one for accumulation-signal entries,
-    one for overbought trim warnings, for tickers that triggered this week.
+    Returns (entry_results, trim_results, approaching_results) — three
+    dicts of {ticker: trigger_detail_dict}: accumulation-signal entries,
+    overbought trim warnings, and "approaching crossover" watch notes,
+    for tickers that triggered this week.
     """
     entry_results = {}
     trim_results  = {}
+    approaching_results = {}
     log.info(f"── {label}: {len(tickers)} tickers  [Weekly / 2y]")
     for ticker in tickers:
         try:
@@ -498,11 +580,21 @@ def fetch_yfinance(tickers: list, label: str) -> tuple:
                 trim_results[ticker] = trim_hit
                 log.info(f"  ⚠️ {ticker}: URSI {trim_hit['prev_ursi']} → {trim_hit['ursi']} "
                           f"fell below {URSI_TRIM_LEVEL:.0f}  ← TRIM WARNING")
+
+            # Only worth checking "approaching" if it didn't already fire
+            # as a confirmed entry this same week.
+            if not hit:
+                approach_hit = check_ursi_approaching(close)
+                if approach_hit:
+                    approaching_results[ticker] = approach_hit
+                    log.info(f"  👀 {ticker}: URSI {approach_hit['ursi']} → signal {approach_hit['signal']} "
+                              f"(gap {approach_hit['gap']})  ← APPROACHING, ~{approach_hit['est_weeks']}w")
         except Exception as e:
             log.error(f"  ✗ {ticker}: {e}")
     log.info(f"  ✅ {label} done — {len(entry_results)} entry trigger(s), "
-              f"{len(trim_results)} trim warning(s) out of {len(tickers)}")
-    return entry_results, trim_results
+              f"{len(trim_results)} trim warning(s), "
+              f"{len(approaching_results)} approaching-crossover note(s) out of {len(tickers)}")
+    return entry_results, trim_results, approaching_results
 
 
 def fetch_crypto(crypto_tickers: list, label: str = "Crypto") -> tuple:
@@ -512,7 +604,7 @@ def fetch_crypto(crypto_tickers: list, label: str = "Crypto") -> tuple:
     every other instrument in this bot. This replaces the previous
     CoinGecko-based fetch, which was silently failing/rate-limiting on
     GitHub Actions runners and causing crypto to never trigger.
-    Returns (entry_results, trim_results).
+    Returns (entry_results, trim_results, approaching_results).
     """
     return fetch_yfinance(crypto_tickers, label)
 
@@ -522,7 +614,8 @@ def fetch_crypto(crypto_tickers: list, label: str = "Crypto") -> tuple:
 # weekly notification sent this month — see monthly_digest.py)
 # ══════════════════════════════════════════════════════════════════════════════
 
-def append_weekly_log(today: datetime, triggered: dict, trim_triggered: dict, total_scanned: int) -> None:
+def append_weekly_log(today: datetime, triggered: dict, trim_triggered: dict,
+                       approaching_triggered: dict, total_scanned: int) -> None:
     os.makedirs(os.path.dirname(WEEKLY_LOG_FILE) or ".", exist_ok=True)
     entries = []
     if os.path.exists(WEEKLY_LOG_FILE):
@@ -538,6 +631,7 @@ def append_weekly_log(today: datetime, triggered: dict, trim_triggered: dict, to
         "total_scanned": total_scanned,
         "triggered": {sym: info for sym, info in triggered.items()},
         "trim_triggered": {sym: info for sym, info in trim_triggered.items()},
+        "approaching_triggered": {sym: info for sym, info in approaching_triggered.items()},
     })
 
     with open(WEEKLY_LOG_FILE, "w") as f:
@@ -577,35 +671,28 @@ def get_label(sym: str) -> str:
     return sym.replace(".NS", "").replace("^", "")
 
 
-def build_message(triggered: dict, trim_triggered: dict, total_scanned: int, run_type: str) -> str:
+def build_message(triggered: dict, trim_triggered: dict, approaching_triggered: dict,
+                   total_scanned: int, run_type: str) -> str:
     now = datetime.utcnow().strftime("%d %b %Y")
 
-    sections = {
-        "🇮🇳 Indian Indices":    {},
-        "🇺🇸 US Indices":        {},
-        "💼 Portfolio Holdings": {},
-    }
+    def bucket(triggered_dict):
+        out = {
+            "🇮🇳 Indian Indices":    {},
+            "🇺🇸 US Indices":        {},
+            "💼 Portfolio Holdings": {},
+        }
+        for sym, info in triggered_dict.items():
+            if sym in set(INDIAN_INDICES):
+                out["🇮🇳 Indian Indices"][sym] = info
+            elif sym in set(US_INDICES):
+                out["🇺🇸 US Indices"][sym] = info
+            else:
+                out["💼 Portfolio Holdings"][sym] = info
+        return out
 
-    for sym, info in triggered.items():
-        if sym in set(INDIAN_INDICES):
-            sections["🇮🇳 Indian Indices"][sym] = info
-        elif sym in set(US_INDICES):
-            sections["🇺🇸 US Indices"][sym] = info
-        else:
-            sections["💼 Portfolio Holdings"][sym] = info
-
-    trim_sections = {
-        "🇮🇳 Indian Indices":    {},
-        "🇺🇸 US Indices":        {},
-        "💼 Portfolio Holdings": {},
-    }
-    for sym, info in trim_triggered.items():
-        if sym in set(INDIAN_INDICES):
-            trim_sections["🇮🇳 Indian Indices"][sym] = info
-        elif sym in set(US_INDICES):
-            trim_sections["🇺🇸 US Indices"][sym] = info
-        else:
-            trim_sections["💼 Portfolio Holdings"][sym] = info
+    sections            = bucket(triggered)
+    trim_sections       = bucket(trim_triggered)
+    approaching_sections = bucket(approaching_triggered)
 
     trigger_icon = "🔔 Weekly" if run_type == "scheduled" else "🔍 Manual"
     lines = [
@@ -651,9 +738,25 @@ def build_message(triggered: dict, trim_triggered: dict, total_scanned: int, run
             )
         lines.append("")
 
+    # ── Approaching-crossover watch notes — get ready to deploy ──────────
+    any_approaching = any(items for items in approaching_sections.values())
+    if any_approaching:
+        any_hit = True
+        lines.append(f"👀 <b>APPROACHING CROSSOVER</b> — est. within ~{URSI_APPROACH_MAX_WEEKS}w, get capital ready")
+        for section, items in approaching_sections.items():
+            if not items:
+                continue
+            lines.append(f"<b>{section}</b>")
+            for sym, info in sorted(items.items(), key=lambda x: x[1]["est_weeks"]):
+                lines.append(
+                    f"  👀 {get_label(sym)}  →  URSI {info['ursi']} vs signal {info['signal']} "
+                    f"(gap {info['gap']})  →  <b>~{info['est_weeks']}w</b> to projected cross"
+                )
+            lines.append("")
+
     if not any_hit:
         lines.append("✅ <b>No triggers this week.</b>")
-        lines.append("No accumulation crossovers and no trim warnings on any tracked instrument.")
+        lines.append("No accumulation crossovers, trim warnings, or approaching-crossover notes on any tracked instrument.")
         lines.append("")
 
     lines += [
@@ -662,6 +765,8 @@ def build_message(triggered: dict, trim_triggered: dict, total_scanned: int, run
         "💎 DEEP ACCUM = URSI dipped below 20 within the last ~8 weekly bars before the cross — historically higher-conviction (e.g. MOTHERSON, TRENT).",
         f"🔻 TRIM WARNING = URSI was ≥{URSI_TRIM_LEVEL:.0f} (overbought) and has now fallen back below {URSI_TRIM_LEVEL:.0f} — "
         f"consider trimming ~30% of the position on the overbought reversal.",
+        f"👀 APPROACHING CROSSOVER = URSI is below 50, rising, and closing the gap to its signal line at a rate that "
+        f"projects a cross within ~{URSI_APPROACH_MAX_WEEKS} weeks — a linear projection, not a promise. Get funds staged, not deployed yet.",
         "💡 <i>Weekly signals only. Confirm before acting. Capital Saturation handled separately.</i>",
     ]
     return "\n".join(lines)
@@ -684,11 +789,12 @@ def main():
              + len(HOLDINGS_CRYPTO))
 
     log.info("=" * 60)
-    log.info("  Ultimate RSI [LuxAlgo] Scanner v9")
+    log.info("  Ultimate RSI [LuxAlgo] Scanner v10")
     log.info(f"  Run type   : {run_type.upper()}")
     log.info(f"  Entry      : URSI crosses ↑ signal, was <50 prior bar (weekly)")
     log.info(f"  Deep accum : URSI <20 within last {URSI_DEEP_ACCUM_LOOKBACK} weekly bars before cross")
     log.info(f"  Trim       : URSI ≥{URSI_TRIM_LEVEL:.0f} prior bar, falls below {URSI_TRIM_LEVEL:.0f} this bar")
+    log.info(f"  Approaching: URSI <50, gap to signal narrowing, projected cross within {URSI_APPROACH_MAX_WEEKS}w")
     log.info(f"  Interval   : {YF_INTERVAL}  |  Period: {YF_PERIOD}")
     log.info(f"  Instruments: {total} (indices + holdings)")
     log.info(f"  yfinance   : {yf.__version__}")
@@ -696,6 +802,7 @@ def main():
 
     triggered: dict = {}
     trim_triggered: dict = {}
+    approaching_triggered: dict = {}
 
     for tickers, label in [
         (INDIAN_INDICES,        "Indian Indices"),
@@ -703,25 +810,29 @@ def main():
         (HOLDINGS_NSE_STOCKS,   "Portfolio — NSE Stocks"),
         (HOLDINGS_US_STOCKS,    "Portfolio — US Stocks"),
     ]:
-        entry_hits, trim_hits = fetch_yfinance(tickers, label)
+        entry_hits, trim_hits, approaching_hits = fetch_yfinance(tickers, label)
         triggered.update(entry_hits)
         trim_triggered.update(trim_hits)
+        approaching_triggered.update(approaching_hits)
 
-    entry_hits, trim_hits = fetch_crypto(HOLDINGS_CRYPTO, "Portfolio — Crypto")
+    entry_hits, trim_hits, approaching_hits = fetch_crypto(HOLDINGS_CRYPTO, "Portfolio — Crypto")
     triggered.update(entry_hits)
     trim_triggered.update(trim_hits)
+    approaching_triggered.update(approaching_hits)
 
     log.info("=" * 60)
-    log.info(f"  Total entry triggers : {len(triggered)} / {total}")
-    log.info(f"  Total trim warnings  : {len(trim_triggered)} / {total}")
+    log.info(f"  Total entry triggers      : {len(triggered)} / {total}")
+    log.info(f"  Total trim warnings       : {len(trim_triggered)} / {total}")
+    log.info(f"  Total approaching notes   : {len(approaching_triggered)} / {total}")
     log.info("=" * 60)
 
-    send_telegram(build_message(triggered, trim_triggered, total_scanned=total, run_type=run_type))
+    send_telegram(build_message(triggered, trim_triggered, approaching_triggered,
+                                 total_scanned=total, run_type=run_type))
 
     # Log this week's notification so the last-day-of-month digest
     # (src/monthly_digest.py) can compile everything sent this month.
     if run_type == "scheduled":
-        append_weekly_log(today, triggered, trim_triggered, total)
+        append_weekly_log(today, triggered, trim_triggered, approaching_triggered, total)
 
 
 if __name__ == "__main__":
