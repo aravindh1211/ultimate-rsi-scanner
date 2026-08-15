@@ -183,26 +183,14 @@ def build_backfill_message(all_hits: dict, weeks: int) -> str:
         day = by_date[date]
 
         for sym, h in sorted(day["trim"], key=lambda x: -x[1]["prev_ursi"]):
-            lines.append(
-                f"  🔻 {get_label(sym)}  →  URSI {h['prev_ursi']} → "
-                f"<b>{h['ursi']}</b>  (trim warning, fell below {URSI_TRIM_LEVEL:.0f})"
-            )
+            lines.append(f"  🔻 {get_label(sym)}")
 
         for sym, h in sorted(day["entry"], key=lambda x: x[1]["ursi"]):
-            deep_tag = ""
-            if h.get("deep_accum"):
-                deep_tag = f"  💎 <b>DEEP ACCUM</b> (dipped to {h['deep_accum_low']})"
             marker = "💎" if h.get("deep_accum") else "🟢"
-            lines.append(
-                f"  {marker} {get_label(sym)}  →  URSI {h['prev_ursi']} → "
-                f"<b>{h['ursi']}</b> (signal {h['signal']}){deep_tag}"
-            )
+            lines.append(f"  {marker} {get_label(sym)}")
 
         for sym, h in sorted(day["approaching"], key=lambda x: x[1]["est_weeks"]):
-            lines.append(
-                f"  👀 {get_label(sym)}  →  URSI {h['ursi']} vs signal {h['signal']} "
-                f"(gap {h['gap']})  →  <b>~{h['est_weeks']}w</b> to projected cross"
-            )
+            lines.append(f"  👀 {get_label(sym)}")
 
         lines.append("")
 
