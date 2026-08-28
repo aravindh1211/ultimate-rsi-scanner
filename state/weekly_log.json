@@ -118,5 +118,76 @@
         "ursi": 79.22
       }
     }
+  },
+  {
+    "approaching_triggered": {
+      "BEL.NS": {
+        "est_weeks": 3.7,
+        "gap": 8.43,
+        "signal": 57.15,
+        "ursi": 48.71
+      },
+      "COST": {
+        "est_weeks": 5.7,
+        "gap": 3.83,
+        "signal": 44.12,
+        "ursi": 40.29
+      },
+      "DRREDDY.NS": {
+        "est_weeks": 5.1,
+        "gap": 12.18,
+        "signal": 52.79,
+        "ursi": 40.6
+      },
+      "GC=F": {
+        "est_weeks": 0.7,
+        "gap": 2.12,
+        "signal": 46.63,
+        "ursi": 44.5
+      },
+      "PEP": {
+        "est_weeks": 2.7,
+        "gap": 5.19,
+        "signal": 26.12,
+        "ursi": 20.93
+      },
+      "SI=F": {
+        "est_weeks": 3.1,
+        "gap": 5.87,
+        "signal": 45.93,
+        "ursi": 40.06
+      },
+      "TMUS": {
+        "est_weeks": 0.0,
+        "gap": 0.0,
+        "signal": 29.77,
+        "ursi": 29.76
+      },
+      "TSLA": {
+        "est_weeks": 1.7,
+        "gap": 2.94,
+        "signal": 33.56,
+        "ursi": 30.62
+      },
+      "^CNXPSUBANK": {
+        "est_weeks": 2.7,
+        "gap": 4.34,
+        "signal": 48.54,
+        "ursi": 44.2
+      }
+    },
+    "date": "2026-08-28",
+    "total_scanned": 164,
+    "triggered": {},
+    "trim_triggered": {
+      "ABBV": {
+        "prev_ursi": 80.33,
+        "ursi": 77.16
+      },
+      "LLY": {
+        "prev_ursi": 83.81,
+        "ursi": 79.16
+      }
+    }
   }
 ]
