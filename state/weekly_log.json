@@ -1,1 +1,68 @@
-[]
+[
+  {
+    "approaching_triggered": {
+      "GC=F": {
+        "est_weeks": 0.8,
+        "gap": 2.08,
+        "signal": 46.27,
+        "ursi": 44.19
+      },
+      "PEP": {
+        "est_weeks": 4.6,
+        "gap": 5.1,
+        "signal": 25.33,
+        "ursi": 20.24
+      },
+      "SI=F": {
+        "est_weeks": 3.9,
+        "gap": 5.24,
+        "signal": 45.12,
+        "ursi": 39.88
+      },
+      "TSLA": {
+        "est_weeks": 2.0,
+        "gap": 2.17,
+        "signal": 33.19,
+        "ursi": 31.02
+      },
+      "^CNXPSUBANK": {
+        "est_weeks": 3.7,
+        "gap": 5.0,
+        "signal": 48.44,
+        "ursi": 43.43
+      }
+    },
+    "date": "2026-09-04",
+    "total_scanned": 164,
+    "triggered": {
+      "META": {
+        "deep_accum": false,
+        "deep_accum_low": 32.47,
+        "prev_ursi": 35.62,
+        "signal": 36.89,
+        "ursi": 39.08
+      },
+      "RELIANCE.NS": {
+        "deep_accum": false,
+        "deep_accum_low": 30.29,
+        "prev_ursi": 33.3,
+        "signal": 36.7,
+        "ursi": 37.03
+      }
+    },
+    "trim_triggered": {
+      "EICHERMOT.NS": {
+        "prev_ursi": 80.93,
+        "ursi": 75.14
+      },
+      "SIEMENS.NS": {
+        "prev_ursi": 81.6,
+        "ursi": 78.6
+      },
+      "^NSEMDCP50": {
+        "prev_ursi": 81.66,
+        "ursi": 79.78
+      }
+    }
+  }
+]
