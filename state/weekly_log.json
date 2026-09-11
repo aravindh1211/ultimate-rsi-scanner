@@ -64,5 +64,62 @@
         "ursi": 79.78
       }
     }
+  },
+  {
+    "approaching_triggered": {
+      "COALINDIA.NS": {
+        "est_weeks": 4.3,
+        "gap": 14.73,
+        "signal": 44.09,
+        "ursi": 29.35
+      },
+      "DRREDDY.NS": {
+        "est_weeks": 5.4,
+        "gap": 9.18,
+        "signal": 49.61,
+        "ursi": 40.43
+      },
+      "TSLA": {
+        "est_weeks": 0.3,
+        "gap": 0.26,
+        "signal": 33.14,
+        "ursi": 32.89
+      },
+      "^VIX": {
+        "est_weeks": 2.8,
+        "gap": 3.68,
+        "signal": 33.85,
+        "ursi": 30.17
+      }
+    },
+    "date": "2026-09-11",
+    "total_scanned": 164,
+    "triggered": {},
+    "trim_triggered": {
+      "ABB.NS": {
+        "prev_ursi": 80.64,
+        "ursi": 79.03
+      },
+      "IYH": {
+        "prev_ursi": 84.02,
+        "ursi": 79.89
+      },
+      "SUNPHARMA.NS": {
+        "prev_ursi": 80.65,
+        "ursi": 76.83
+      },
+      "UNH": {
+        "prev_ursi": 80.52,
+        "ursi": 72.06
+      },
+      "WELL": {
+        "prev_ursi": 80.14,
+        "ursi": 79.94
+      },
+      "^MID": {
+        "prev_ursi": 82.22,
+        "ursi": 79.25
+      }
+    }
   }
 ]
