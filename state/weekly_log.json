@@ -121,5 +121,74 @@
         "ursi": 79.25
       }
     }
+  },
+  {
+    "approaching_triggered": {
+      "COALINDIA.NS": {
+        "est_weeks": 3.7,
+        "gap": 13.78,
+        "signal": 42.0,
+        "ursi": 28.22
+      },
+      "DRREDDY.NS": {
+        "est_weeks": 3.8,
+        "gap": 6.78,
+        "signal": 48.57,
+        "ursi": 41.79
+      },
+      "ONGC.NS": {
+        "est_weeks": 4.9,
+        "gap": 8.68,
+        "signal": 48.31,
+        "ursi": 39.63
+      },
+      "SI=F": {
+        "est_weeks": 2.9,
+        "gap": 2.92,
+        "signal": 43.83,
+        "ursi": 40.91
+      },
+      "TATAPOWER.NS": {
+        "est_weeks": 2.5,
+        "gap": 8.26,
+        "signal": 45.82,
+        "ursi": 37.56
+      },
+      "TORNTPOWER.NS": {
+        "est_weeks": 4.4,
+        "gap": 13.5,
+        "signal": 47.43,
+        "ursi": 33.93
+      },
+      "TSLA": {
+        "est_weeks": 0.4,
+        "gap": 0.36,
+        "signal": 33.09,
+        "ursi": 32.73
+      },
+      "^VIX": {
+        "est_weeks": 2.6,
+        "gap": 3.23,
+        "signal": 33.39,
+        "ursi": 30.16
+      }
+    },
+    "date": "2026-09-18",
+    "total_scanned": 164,
+    "triggered": {},
+    "trim_triggered": {
+      "EEM": {
+        "prev_ursi": 80.47,
+        "ursi": 78.56
+      },
+      "VTWO": {
+        "prev_ursi": 84.51,
+        "ursi": 76.67
+      },
+      "^RUT": {
+        "prev_ursi": 83.88,
+        "ursi": 75.93
+      }
+    }
   }
 ]
