@@ -190,5 +190,86 @@
         "ursi": 75.93
       }
     }
+  },
+  {
+    "approaching_triggered": {
+      "COALINDIA.NS": {
+        "est_weeks": 3.0,
+        "gap": 9.52,
+        "signal": 40.57,
+        "ursi": 31.05
+      },
+      "DRREDDY.NS": {
+        "est_weeks": 2.2,
+        "gap": 4.87,
+        "signal": 47.8,
+        "ursi": 42.93
+      },
+      "HDFCBANK.NS": {
+        "est_weeks": 3.4,
+        "gap": 3.04,
+        "signal": 19.76,
+        "ursi": 16.73
+      },
+      "ONGC.NS": {
+        "est_weeks": 4.2,
+        "gap": 6.55,
+        "signal": 47.33,
+        "ursi": 40.78
+      },
+      "POWERGRID.NS": {
+        "est_weeks": 4.5,
+        "gap": 7.6,
+        "signal": 40.8,
+        "ursi": 33.2
+      },
+      "TATAPOWER.NS": {
+        "est_weeks": 4.7,
+        "gap": 7.95,
+        "signal": 44.61,
+        "ursi": 36.66
+      },
+      "^VIX": {
+        "est_weeks": 2.9,
+        "gap": 2.88,
+        "signal": 32.9,
+        "ursi": 30.02
+      }
+    },
+    "date": "2026-09-25",
+    "total_scanned": 164,
+    "triggered": {
+      "ITC.NS": {
+        "deep_accum": true,
+        "deep_accum_low": 8.76,
+        "prev_ursi": 9.67,
+        "signal": 11.88,
+        "ursi": 12.25
+      },
+      "SUNTV.NS": {
+        "deep_accum": true,
+        "deep_accum_low": 19.25,
+        "prev_ursi": 19.25,
+        "signal": 29.33,
+        "ursi": 30.13
+      },
+      "TSLA": {
+        "deep_accum": false,
+        "deep_accum_low": 25.1,
+        "prev_ursi": 32.8,
+        "signal": 33.23,
+        "ursi": 34.12
+      }
+    },
+    "trim_triggered": {
+      "PIDILITIND.NS": {
+        "prev_ursi": 82.09,
+        "ursi": 72.17
+      },
+      "UNP": {
+        "prev_ursi": 80.42,
+        "ursi": 78.17
+      }
+    }
   }
 ]
