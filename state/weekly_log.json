@@ -1,1 +1,85 @@
-[]
+[
+  {
+    "approaching_triggered": {
+      "COALINDIA.NS": {
+        "est_weeks": 4.2,
+        "gap": 8.65,
+        "signal": 39.24,
+        "ursi": 30.6
+      },
+      "DRREDDY.NS": {
+        "est_weeks": 2.2,
+        "gap": 3.88,
+        "signal": 47.2,
+        "ursi": 43.32
+      },
+      "HDFCBANK.NS": {
+        "est_weeks": 2.3,
+        "gap": 2.89,
+        "signal": 19.33,
+        "ursi": 16.44
+      },
+      "HON": {
+        "est_weeks": 3.1,
+        "gap": 10.76,
+        "signal": 46.57,
+        "ursi": 35.81
+      },
+      "ITC.NS": {
+        "est_weeks": 1.5,
+        "gap": 1.11,
+        "signal": 11.71,
+        "ursi": 10.59
+      },
+      "SRF.NS": {
+        "est_weeks": 4.0,
+        "gap": 5.33,
+        "signal": 31.97,
+        "ursi": 26.64
+      },
+      "^VIX": {
+        "est_weeks": 2.7,
+        "gap": 1.63,
+        "signal": 32.63,
+        "ursi": 31.0
+      }
+    },
+    "date": "2026-10-02",
+    "total_scanned": 164,
+    "triggered": {},
+    "trim_triggered": {
+      "APOLLOHOSP.NS": {
+        "prev_ursi": 80.29,
+        "ursi": 67.16
+      },
+      "BAJAJ-AUTO.NS": {
+        "prev_ursi": 86.91,
+        "ursi": 77.21
+      },
+      "IYH": {
+        "prev_ursi": 80.84,
+        "ursi": 76.84
+      },
+      "JNJ": {
+        "prev_ursi": 82.66,
+        "ursi": 76.37
+      },
+      "JPM": {
+        "prev_ursi": 82.06,
+        "ursi": 78.85
+      },
+      "KO": {
+        "prev_ursi": 83.2,
+        "ursi": 79.45
+      },
+      "^NYA": {
+        "prev_ursi": 83.25,
+        "ursi": 73.31
+      },
+      "^W5000": {
+        "prev_ursi": 81.69,
+        "ursi": 79.59
+      }
+    }
+  }
+]
