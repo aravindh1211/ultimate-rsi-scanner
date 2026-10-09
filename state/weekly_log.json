@@ -81,5 +81,105 @@
         "ursi": 79.59
       }
     }
+  },
+  {
+    "approaching_triggered": {
+      "COALINDIA.NS": {
+        "est_weeks": 4.3,
+        "gap": 8.15,
+        "signal": 38.02,
+        "ursi": 29.87
+      },
+      "COST": {
+        "est_weeks": 0.6,
+        "gap": 2.13,
+        "signal": 37.25,
+        "ursi": 35.13
+      },
+      "DRREDDY.NS": {
+        "est_weeks": 4.0,
+        "gap": 3.85,
+        "signal": 46.61,
+        "ursi": 42.77
+      },
+      "HON": {
+        "est_weeks": 4.7,
+        "gap": 10.52,
+        "signal": 44.9,
+        "ursi": 34.38
+      },
+      "LIN": {
+        "est_weeks": 3.2,
+        "gap": 11.72,
+        "signal": 49.3,
+        "ursi": 37.58
+      },
+      "NKE": {
+        "est_weeks": 4.9,
+        "gap": 3.28,
+        "signal": 13.35,
+        "ursi": 10.07
+      },
+      "SRF.NS": {
+        "est_weeks": 2.9,
+        "gap": 3.55,
+        "signal": 31.42,
+        "ursi": 27.87
+      },
+      "XEL": {
+        "est_weeks": 4.6,
+        "gap": 14.61,
+        "signal": 41.05,
+        "ursi": 26.44
+      },
+      "^VIX": {
+        "est_weeks": 3.9,
+        "gap": 2.0,
+        "signal": 32.27,
+        "ursi": 30.27
+      }
+    },
+    "date": "2026-10-09",
+    "total_scanned": 164,
+    "triggered": {
+      "AMT": {
+        "deep_accum": false,
+        "deep_accum_low": 33.91,
+        "prev_ursi": 33.91,
+        "signal": 42.27,
+        "ursi": 47.18
+      },
+      "ITC.NS": {
+        "deep_accum": true,
+        "deep_accum_low": 8.76,
+        "prev_ursi": 10.6,
+        "signal": 12.06,
+        "ursi": 14.29
+      },
+      "NFLX": {
+        "deep_accum": true,
+        "deep_accum_low": 15.12,
+        "prev_ursi": 15.12,
+        "signal": 17.29,
+        "ursi": 17.59
+      },
+      "SPGI": {
+        "deep_accum": false,
+        "deep_accum_low": 43.12,
+        "prev_ursi": 43.12,
+        "signal": 46.38,
+        "ursi": 47.81
+      }
+    },
+    "trim_triggered": {
+      "TITAN.NS": {
+        "prev_ursi": 82.76,
+        "ursi": 72.05
+      },
+      "VEA": {
+        "prev_ursi": 80.84,
+        "ursi": 78.88
+      }
+    }
   }
 ]
