@@ -181,5 +181,168 @@
         "ursi": 78.88
       }
     }
+  },
+  {
+    "approaching_triggered": {
+      "CL": {
+        "est_weeks": 3.3,
+        "gap": 9.76,
+        "signal": 56.03,
+        "ursi": 46.27
+      },
+      "DRREDDY.NS": {
+        "est_weeks": 0.6,
+        "gap": 0.77,
+        "signal": 46.49,
+        "ursi": 45.72
+      },
+      "DUK": {
+        "est_weeks": 1.9,
+        "gap": 9.64,
+        "signal": 44.91,
+        "ursi": 35.27
+      },
+      "HD": {
+        "est_weeks": 3.9,
+        "gap": 7.48,
+        "signal": 36.71,
+        "ursi": 29.23
+      },
+      "HINDUNILVR.NS": {
+        "est_weeks": 2.5,
+        "gap": 3.04,
+        "signal": 14.79,
+        "ursi": 11.75
+      },
+      "HON": {
+        "est_weeks": 4.5,
+        "gap": 7.9,
+        "signal": 43.68,
+        "ursi": 35.78
+      },
+      "LIN": {
+        "est_weeks": 2.3,
+        "gap": 7.97,
+        "signal": 48.07,
+        "ursi": 40.1
+      },
+      "MCD": {
+        "est_weeks": 2.7,
+        "gap": 5.15,
+        "signal": 19.11,
+        "ursi": 13.97
+      },
+      "NEE": {
+        "est_weeks": 2.5,
+        "gap": 8.67,
+        "signal": 40.69,
+        "ursi": 32.02
+      },
+      "NKE": {
+        "est_weeks": 0.1,
+        "gap": 0.09,
+        "signal": 13.33,
+        "ursi": 13.25
+      },
+      "PEP": {
+        "est_weeks": 1.6,
+        "gap": 2.68,
+        "signal": 19.74,
+        "ursi": 17.06
+      },
+      "SO": {
+        "est_weeks": 1.9,
+        "gap": 10.25,
+        "signal": 39.8,
+        "ursi": 29.55
+      },
+      "TRENT.NS": {
+        "est_weeks": 0.7,
+        "gap": 0.34,
+        "signal": 34.29,
+        "ursi": 33.95
+      },
+      "WM": {
+        "est_weeks": 2.4,
+        "gap": 8.81,
+        "signal": 39.74,
+        "ursi": 30.93
+      },
+      "XEL": {
+        "est_weeks": 1.8,
+        "gap": 9.57,
+        "signal": 39.6,
+        "ursi": 30.03
+      },
+      "^BSESN": {
+        "est_weeks": 1.6,
+        "gap": 2.57,
+        "signal": 30.91,
+        "ursi": 28.34
+      },
+      "^DJT": {
+        "est_weeks": 5.1,
+        "gap": 17.2,
+        "signal": 57.44,
+        "ursi": 40.23
+      },
+      "^DJU": {
+        "est_weeks": 1.7,
+        "gap": 8.57,
+        "signal": 37.9,
+        "ursi": 29.34
+      }
+    },
+    "date": "2026-10-16",
+    "total_scanned": 164,
+    "triggered": {
+      "COST": {
+        "deep_accum": false,
+        "deep_accum_low": 27.18,
+        "prev_ursi": 35.13,
+        "signal": 38.6,
+        "ursi": 47.37
+      },
+      "INFY.NS": {
+        "deep_accum": false,
+        "deep_accum_low": 23.86,
+        "prev_ursi": 25.78,
+        "signal": 27.39,
+        "ursi": 34.34
+      },
+      "^VIX": {
+        "deep_accum": false,
+        "deep_accum_low": 28.42,
+        "prev_ursi": 30.27,
+        "signal": 33.54,
+        "ursi": 41.74
+      }
+    },
+    "trim_triggered": {
+      "^IXIC": {
+        "prev_ursi": 83.76,
+        "ursi": 77.99
+      },
+      "^OEX": {
+        "prev_ursi": 83.83,
+        "ursi": 79.99
+      },
+      "^RUA": {
+        "prev_ursi": 81.82,
+        "ursi": 77.17
+      },
+      "^RUI": {
+        "prev_ursi": 83.61,
+        "ursi": 79.33
+      },
+      "^SOX": {
+        "prev_ursi": 80.94,
+        "ursi": 71.22
+      },
+      "^W5000": {
+        "prev_ursi": 81.56,
+        "ursi": 79.66
+      }
+    }
   }
 ]
