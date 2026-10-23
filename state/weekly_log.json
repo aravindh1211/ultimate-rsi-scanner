@@ -344,5 +344,176 @@
         "ursi": 79.66
       }
     }
+  },
+  {
+    "approaching_triggered": {
+      "BHARTIARTL.NS": {
+        "est_weeks": 0.9,
+        "gap": 2.58,
+        "signal": 49.82,
+        "ursi": 47.24
+      },
+      "DRREDDY.NS": {
+        "est_weeks": 0.9,
+        "gap": 0.88,
+        "signal": 46.36,
+        "ursi": 45.48
+      },
+      "DUK": {
+        "est_weeks": 1.0,
+        "gap": 5.32,
+        "signal": 44.14,
+        "ursi": 38.82
+      },
+      "HD": {
+        "est_weeks": 1.3,
+        "gap": 4.83,
+        "signal": 35.97,
+        "ursi": 31.14
+      },
+      "HINDUNILVR.NS": {
+        "est_weeks": 4.3,
+        "gap": 4.57,
+        "signal": 14.1,
+        "ursi": 9.53
+      },
+      "HON": {
+        "est_weeks": 1.5,
+        "gap": 3.63,
+        "signal": 43.12,
+        "ursi": 39.48
+      },
+      "ICICIBANK.NS": {
+        "est_weeks": 1.4,
+        "gap": 4.21,
+        "signal": 50.97,
+        "ursi": 46.76
+      },
+      "LIN": {
+        "est_weeks": 1.7,
+        "gap": 5.12,
+        "signal": 47.31,
+        "ursi": 42.19
+      },
+      "MCD": {
+        "est_weeks": 1.1,
+        "gap": 3.07,
+        "signal": 18.65,
+        "ursi": 15.57
+      },
+      "NEE": {
+        "est_weeks": 1.6,
+        "gap": 5.42,
+        "signal": 39.86,
+        "ursi": 34.44
+      },
+      "O": {
+        "est_weeks": 3.3,
+        "gap": 16.73,
+        "signal": 45.33,
+        "ursi": 28.6
+      },
+      "RECLTD.NS": {
+        "est_weeks": 3.3,
+        "gap": 9.57,
+        "signal": 31.38,
+        "ursi": 21.81
+      },
+      "RELIANCE.NS": {
+        "est_weeks": 2.3,
+        "gap": 5.36,
+        "signal": 28.42,
+        "ursi": 23.06
+      },
+      "SO": {
+        "est_weeks": 1.4,
+        "gap": 6.97,
+        "signal": 38.79,
+        "ursi": 31.82
+      },
+      "TATACONSUM.NS": {
+        "est_weeks": 5.1,
+        "gap": 8.09,
+        "signal": 19.51,
+        "ursi": 11.41
+      },
+      "TRENT.NS": {
+        "est_weeks": 1.3,
+        "gap": 1.77,
+        "signal": 34.03,
+        "ursi": 32.26
+      },
+      "XEL": {
+        "est_weeks": 1.4,
+        "gap": 6.29,
+        "signal": 38.68,
+        "ursi": 32.4
+      },
+      "^BSESN": {
+        "est_weeks": 1.4,
+        "gap": 3.45,
+        "signal": 30.4,
+        "ursi": 26.95
+      },
+      "^CNXPSUBANK": {
+        "est_weeks": 3.6,
+        "gap": 6.59,
+        "signal": 39.98,
+        "ursi": 33.39
+      },
+      "^DJT": {
+        "est_weeks": 5.1,
+        "gap": 14.13,
+        "signal": 55.3,
+        "ursi": 41.16
+      },
+      "^DJU": {
+        "est_weeks": 1.3,
+        "gap": 5.97,
+        "signal": 37.0,
+        "ursi": 31.03
+      },
+      "^NSEI": {
+        "est_weeks": 2.1,
+        "gap": 4.75,
+        "signal": 31.21,
+        "ursi": 26.46
+      }
+    },
+    "date": "2026-10-23",
+    "total_scanned": 164,
+    "triggered": {
+      "PEP": {
+        "deep_accum": true,
+        "deep_accum_low": 12.75,
+        "prev_ursi": 17.56,
+        "signal": 19.97,
+        "ursi": 21.05
+      },
+      "TSLA": {
+        "deep_accum": false,
+        "deep_accum_low": 30.58,
+        "prev_ursi": 33.37,
+        "signal": 34.01,
+        "ursi": 36.47
+      },
+      "WM": {
+        "deep_accum": false,
+        "deep_accum_low": 22.26,
+        "prev_ursi": 31.68,
+        "signal": 40.29,
+        "ursi": 43.21
+      }
+    },
+    "trim_triggered": {
+      "^CNXPHARMA": {
+        "prev_ursi": 82.56,
+        "ursi": 71.88
+      },
+      "^OEX": {
+        "prev_ursi": 80.07,
+        "ursi": 78.93
+      }
+    }
   }
 ]
