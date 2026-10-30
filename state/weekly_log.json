@@ -515,5 +515,240 @@
         "ursi": 78.93
       }
     }
+  },
+  {
+    "approaching_triggered": {
+      "CIPLA.NS": {
+        "est_weeks": 1.2,
+        "gap": 3.32,
+        "signal": 48.73,
+        "ursi": 45.41
+      },
+      "CMCSA": {
+        "est_weeks": 1.6,
+        "gap": 3.38,
+        "signal": 39.19,
+        "ursi": 35.8
+      },
+      "DUK": {
+        "est_weeks": 0.5,
+        "gap": 2.33,
+        "signal": 43.82,
+        "ursi": 41.49
+      },
+      "HD": {
+        "est_weeks": 0.7,
+        "gap": 2.28,
+        "signal": 35.65,
+        "ursi": 33.37
+      },
+      "HDFCAMC.NS": {
+        "est_weeks": 4.3,
+        "gap": 11.45,
+        "signal": 36.98,
+        "ursi": 25.53
+      },
+      "HDFCBANK.NS": {
+        "est_weeks": 3.1,
+        "gap": 2.25,
+        "signal": 17.62,
+        "ursi": 15.37
+      },
+      "HINDUNILVR.NS": {
+        "est_weeks": 1.2,
+        "gap": 1.62,
+        "signal": 13.85,
+        "ursi": 12.23
+      },
+      "HON": {
+        "est_weeks": 1.6,
+        "gap": 3.74,
+        "signal": 42.52,
+        "ursi": 38.78
+      },
+      "ICICIBANK.NS": {
+        "est_weeks": 2.0,
+        "gap": 3.37,
+        "signal": 50.44,
+        "ursi": 47.07
+      },
+      "INFRABEES.NS": {
+        "est_weeks": 3.0,
+        "gap": 8.92,
+        "signal": 29.34,
+        "ursi": 20.42
+      },
+      "IOC.NS": {
+        "est_weeks": 1.9,
+        "gap": 4.1,
+        "signal": 34.46,
+        "ursi": 30.36
+      },
+      "NEE": {
+        "est_weeks": 0.8,
+        "gap": 2.76,
+        "signal": 39.48,
+        "ursi": 36.72
+      },
+      "NTPC.NS": {
+        "est_weeks": 3.0,
+        "gap": 6.64,
+        "signal": 30.66,
+        "ursi": 24.02
+      },
+      "O": {
+        "est_weeks": 3.2,
+        "gap": 14.09,
+        "signal": 43.2,
+        "ursi": 29.11
+      },
+      "ONGC.NS": {
+        "est_weeks": 3.5,
+        "gap": 7.33,
+        "signal": 39.46,
+        "ursi": 32.13
+      },
+      "POWERGRID.NS": {
+        "est_weeks": 2.9,
+        "gap": 6.25,
+        "signal": 32.77,
+        "ursi": 26.52
+      },
+      "RECLTD.NS": {
+        "est_weeks": 5.3,
+        "gap": 8.61,
+        "signal": 30.08,
+        "ursi": 21.47
+      },
+      "SO": {
+        "est_weeks": 1.4,
+        "gap": 5.25,
+        "signal": 37.98,
+        "ursi": 32.73
+      },
+      "TATACONSUM.NS": {
+        "est_weeks": 0.9,
+        "gap": 2.93,
+        "signal": 19.03,
+        "ursi": 16.1
+      },
+      "TATAPOWER.NS": {
+        "est_weeks": 4.0,
+        "gap": 7.01,
+        "signal": 37.67,
+        "ursi": 30.65
+      },
+      "TMUS": {
+        "est_weeks": 1.1,
+        "gap": 3.09,
+        "signal": 22.54,
+        "ursi": 19.45
+      },
+      "ULTRACEMCO.NS": {
+        "est_weeks": 3.1,
+        "gap": 9.04,
+        "signal": 48.48,
+        "ursi": 39.44
+      },
+      "XEL": {
+        "est_weeks": 0.6,
+        "gap": 2.48,
+        "signal": 38.37,
+        "ursi": 35.89
+      },
+      "^BSESN": {
+        "est_weeks": 0.1,
+        "gap": 0.31,
+        "signal": 30.35,
+        "ursi": 30.04
+      },
+      "^CNXAUTO": {
+        "est_weeks": 3.2,
+        "gap": 11.92,
+        "signal": 45.77,
+        "ursi": 33.85
+      },
+      "^CNXINFRA": {
+        "est_weeks": 3.2,
+        "gap": 10.07,
+        "signal": 30.54,
+        "ursi": 20.47
+      },
+      "^CNXPSE": {
+        "est_weeks": 5.1,
+        "gap": 14.31,
+        "signal": 37.66,
+        "ursi": 23.35
+      },
+      "^CNXPSUBANK": {
+        "est_weeks": 2.3,
+        "gap": 3.6,
+        "signal": 39.41,
+        "ursi": 35.81
+      },
+      "^DJT": {
+        "est_weeks": 4.0,
+        "gap": 11.35,
+        "signal": 53.55,
+        "ursi": 42.2
+      },
+      "^DJU": {
+        "est_weeks": 1.1,
+        "gap": 3.58,
+        "signal": 36.49,
+        "ursi": 32.91
+      },
+      "^NSEI": {
+        "est_weeks": 0.4,
+        "gap": 1.1,
+        "signal": 31.04,
+        "ursi": 29.94
+      }
+    },
+    "date": "2026-10-30",
+    "total_scanned": 164,
+    "triggered": {
+      "BHARTIARTL.NS": {
+        "deep_accum": false,
+        "deep_accum_low": 40.7,
+        "prev_ursi": 47.25,
+        "signal": 49.94,
+        "ursi": 50.69
+      },
+      "DRREDDY.NS": {
+        "deep_accum": false,
+        "deep_accum_low": 39.45,
+        "prev_ursi": 45.48,
+        "signal": 48.08,
+        "ursi": 59.23
+      },
+      "LIN": {
+        "deep_accum": false,
+        "deep_accum_low": 33.39,
+        "prev_ursi": 42.27,
+        "signal": 47.82,
+        "ursi": 51.01
+      },
+      "MCD": {
+        "deep_accum": true,
+        "deep_accum_low": 10.06,
+        "prev_ursi": 15.89,
+        "signal": 18.76,
+        "ursi": 19.25
+      },
+      "TRENT.NS": {
+        "deep_accum": false,
+        "deep_accum_low": 28.61,
+        "prev_ursi": 32.27,
+        "signal": 34.64,
+        "ursi": 38.54
+      }
+    },
+    "trim_triggered": {
+      "VOO": {
+        "prev_ursi": 81.08,
+        "ursi": 79.34
+      }
+    }
   }
 ]
